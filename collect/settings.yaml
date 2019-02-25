@@ -1,0 +1,9 @@
+# path to root directory containing training example data
+root_dir: ua_vis/data/
+
+# path to image subdirectory (relative to "root_path")
+images_dir: images/
+
+# path to database
+db_dir: database/
+db_name: training_examples.sqlite3
