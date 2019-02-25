@@ -8,8 +8,8 @@ import cv2 as cv
 import base64
 
 flags = tf.app.flags
-flags.DEFINE_string('training_output', 'input/data/test.tfrecords', 'Path to training output')
-flags.DEFINE_string('evaluation_output', 'input/data/eval.tfrecords', 'Path to training output')
+flags.DEFINE_string('training_output', '', 'Path to training output')
+flags.DEFINE_string('evaluation_output', '', 'Path to training output')
 FLAGS = flags.FLAGS
 
 
@@ -93,10 +93,6 @@ def create_tf_examples(ids, images_dir, db_path):
 			classes_text.append(b'rock')
 			classes.append(1)
 
-		# create class text to class id mapping
-		#classes_text = [b'rock']
-		#classes = [1]
-
 		# populate a TFRecord entry for the training example
 		tf_examples.append(tf.train.Example(features=tf.train.Features(feature={
 	        'image/height': dataset_util.int64_feature(example['img_height']),
@@ -119,7 +115,7 @@ def create_tf_examples(ids, images_dir, db_path):
 
 def main(_):
 	# Detect number of training examples
-	images_path = '/data/images'
+	images_path = '/ua_vision_data-dataset1/data/images'
 	num_examples = len([name for name in os.listdir(images_path) if os.path.isfile(os.path.join(images_path,name))])
 
 	# Randomly subdivide examples into training and evaluation sets
@@ -130,39 +126,37 @@ def main(_):
 	eval_ids = list(set(range(1, num_examples + 1)) - set(training_ids))
 
 	# Create directories to contain training input
-	os.mkdir('input')
-	os.mkdir('input/training')
-	os.mkdir('input/data')
-	os.mkdir('input/images')
-	os.mkdir('input/images/test')
-	os.mkdir('input/images/eval')
+	os.makedirs('/pipeline/training')
+	os.makedirs('/pipeline/input/data/images/test')
+	os.makedirs('/pipeline/input/data/images/eval')
 
 	# Put images in "input/images/test" and "input/images/eval" directories
 	for id in training_ids:
 		src = images_path + '/' + str(id) + '.jpg'
-		dest = 'input/images/test/' + str(id) + '.jpg'
+		dest = '/pipeline/input/data/images/test/' + str(id) + '.jpg'
 		shutil.copyfile(src, dest)
 	for id in eval_ids:
 		src = images_path + '/' + str(id) + '.jpg'
-		dest = 'input/images/eval/' + str(id) + '.jpg'
+		dest = '/pipeline/input/data/images/eval/' + str(id) + '.jpg'
 		shutil.copyfile(src, dest)
 
 	# Generate TFRecord for training examples
 	writer = tf.python_io.TFRecordWriter(FLAGS.training_output)
-	examples = create_tf_examples(training_ids, 'input/images/test', 'data/database/training_examples.sqlite3')
+	examples = create_tf_examples(training_ids, \
+		'/pipeline/input/data/images/test', \
+		'/ua_vision_data-dataset1/data/database/training_examples.sqlite3')
 	for e in examples:
 		writer.write(e.SerializeToString())
 	writer.close()
 
 	# Generate TFRecord for evaluation examples
 	writer = tf.python_io.TFRecordWriter(FLAGS.evaluation_output)
-	examples = create_tf_examples(eval_ids, 'input/images/eval', 'data/database/training_examples.sqlite3')
+	examples = create_tf_examples(eval_ids, \
+		'/pipeline/input/data/images/eval', \
+		'/ua_vision_data-dataset1/data/database/training_examples.sqlite3')
 	for e in examples:
 		writer.write(e.SerializeToString())
 	writer.close()
-
-	# Put the model configuration file and label map into "input/training" directory
-	shutil.copytree('/base_models', '/training-cpu/input/base_models')
 
 
 if __name__ == '__main__':

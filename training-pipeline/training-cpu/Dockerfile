@@ -14,7 +14,7 @@ RUN pip install Cython contextlib2 jupyter matplotlib
 # Download Python3 setuptools
 RUN apt-get install python-setuptools -y
 
-# Pull Tensorflow models source code and run setup script
+# Pull Tensorflow models source code
 RUN git clone https://github.com/tensorflow/models.git
 
 # Install COCO API
@@ -33,21 +33,10 @@ ENV PYTHONPATH /models/research/:/models/research/slim
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get install python-opencv -y
 
-# Copy the data directory into the image
-COPY data /data
-COPY . /training-cpu
+# Copy the pipeline into the image
+COPY . /pipeline
 
-# Copy the models into the image
-COPY base_models /base_models
+# Install wget
+RUN apt-get install wget
 
-# Generate training and evaluation sets
-WORKDIR /training-cpu
-RUN python generate_input.py
-
-# Start the training
-WORKDIR /models/research/object_detection
-RUN cp legacy/train.py . && cp legacy/eval.py .
-RUN python train.py \
-    --logtostderr \
-    --train_dir=/training-cpu/input/training \
-    --pipeline_config_path=/training-cpu/input/base_models/faster_rcnn_inception_v2_pets.config
+ENTRYPOINT bash /pipeline/scripts/train.sh
