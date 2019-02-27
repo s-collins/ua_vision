@@ -61,7 +61,7 @@ def download_dataset(settings):
     tmp_file = settings['dirs']['raw_data'] + '/dataset.tar.gz'
 
     print '...Downloading the dataset'
-    wget.download(settings['url']['dataset'], out=tmp_file, bar=None)
+    wget.download(settings['urls']['dataset'], out=tmp_file, bar=None)
     print 'SUCCESS'
 
     print '...Extracting the dataset'
