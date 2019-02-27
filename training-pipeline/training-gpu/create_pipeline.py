@@ -2,6 +2,7 @@ from object_detection.utils import config_util
 import tensorflow as tf
 import os
 import settings
+import subprocess
 import tarfile
 import wget
 
@@ -10,11 +11,11 @@ def download_base_model(settings):
     """Downloads base model config file and checkpoint."""
 
     print '...Base model config file',
-    wget.download(settings['urls']['base_config'], out=settings['paths']['base_config'], bar=None)
+    wget.download(settings['urls']['base_config'], out=settings['paths']['base_config'])
     print 'SUCCESS'
 
     print '...Downloading base model checkpoint',
-    wget.download(settings['urls']['base_checkpoint'], out=settings['dirs']['base_model'] + '/ckpt.tar.gz', bar=None)
+    wget.download(settings['urls']['base_checkpoint'], out=settings['dirs']['base_model'] + '/ckpt.tar.gz')
     print 'SUCCESS'
 
     print '...Extracting base model checkpoint',
@@ -61,7 +62,7 @@ def download_dataset(settings):
     tmp_file = settings['dirs']['raw_data'] + '/dataset.tar.gz'
 
     print '...Downloading the dataset',
-    wget.download(settings['urls']['dataset'], out=tmp_file, bar=None)
+    wget.download(settings['urls']['dataset'], out=tmp_file)
     print 'SUCCESS'
 
     print '...Extracting the dataset',
@@ -86,11 +87,16 @@ if __name__ == '__main__':
     print 'Generating "pipeline.config"'
     populate_config(settings)
 
-    # TODO: Download the dataset
-    print 'Download the dataset'
+    print 'Downloading the dataset'
     download_dataset(settings)
 
-    # TODO: Generate the TFRecords
+    print 'Generating TFRecords for object_detection framework'
+    subprocess.run([
+        'python',
+        'make_tfrecords.py',
+        '--training_output=' + settings['config']['train_input_reader']['tf_record_input_reader']['input_path'],
+        '--evaluation_output=' + settings['config']['eval_input_reader']['tf_record_input_reader']['input_path'],
+    ])
 
     # TODO: Generate the label map
 

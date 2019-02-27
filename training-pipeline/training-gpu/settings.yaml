@@ -6,6 +6,9 @@ urls:
 dirs:
 
   pipeline: pipeline
+  test_images: pipeline/input/test_images
+  eval_images: pipeline/input/eval_images
+  output: pipeline/output
   base_model: base_model
   base_model_checkpoint: base_model/checkpoint
   raw_data: dataset1
@@ -13,6 +16,8 @@ dirs:
 paths:
   base_config: base_model/pipeline.config
   updated_config: pipeline/pipeline.config
+
+training_ratio: 0.8
 
 #------------------------------------------------------------------------------
 # object_detection config file settings

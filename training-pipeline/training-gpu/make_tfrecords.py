@@ -1,11 +1,14 @@
 import tensorflow as tf
 from object_detection.utils import dataset_util
 import random
+import settings
 import shutil
 import sqlite3
 import os
 import cv2 as cv
 
+
+# Script options
 flags = tf.app.flags
 flags.DEFINE_string('training_output', '', 'Path to training output')
 flags.DEFINE_string('evaluation_output', '', 'Path to training output')
@@ -13,15 +16,6 @@ FLAGS = flags.FLAGS
 
 
 def create_tf_examples(ids, images_dir, db_path):
-	"""Generates a TFRecord for given set of training examples.
-
-	Inputs:
-		ids         - list of training example IDs
-		images_dir  - absolute path to directory containing images
-		db_path     - absolute path to database with metadata and labels
-
-	"""
-
 	# list of training examples
 	examples = []
 
@@ -113,37 +107,33 @@ def create_tf_examples(ids, images_dir, db_path):
 
 
 def main(_):
+	settings = settings.load('settings.yaml')
+
 	# Detect number of training examples
-	images_path = '/ua_vision_data-dataset1/data/images'
+	images_path = settings['raw_data'] + '/images'
 	num_examples = len([name for name in os.listdir(images_path) if os.path.isfile(os.path.join(images_path,name))])
 
 	# Randomly subdivide examples into training and evaluation sets
-	# TODO: In the future, this setting should be loaded when the Docker container is executed.
-	training_ratio = 0.8
+	ratio = settings['training_ratio']
 	random.seed()
-	training_ids = random.sample(range(1, num_examples + 1), int(training_ratio * num_examples))
+	training_ids = random.sample(range(1, num_examples + 1), int(ratio * num_examples))
 	eval_ids = list(set(range(1, num_examples + 1)) - set(training_ids))
 
-	# Create directories to contain training input
-	os.makedirs('/pipeline/training')
-	os.makedirs('/pipeline/input/data/images/test')
-	os.makedirs('/pipeline/input/data/images/eval')
-
-	# Put images in "input/images/test" and "input/images/eval" directories
+	# Put images into their directories
 	for id in training_ids:
 		src = images_path + '/' + str(id) + '.jpg'
-		dest = '/pipeline/input/data/images/test/' + str(id) + '.jpg'
+		dest = settings['test_images'] + '/' + str(id) + '.jpg'
 		shutil.copyfile(src, dest)
 	for id in eval_ids:
 		src = images_path + '/' + str(id) + '.jpg'
-		dest = '/pipeline/input/data/images/eval/' + str(id) + '.jpg'
+		dest = settings['eval_images'] + '/' + str(id) + '.jpg'
 		shutil.copyfile(src, dest)
 
 	# Generate TFRecord for training examples
 	writer = tf.python_io.TFRecordWriter(FLAGS.training_output)
 	examples = create_tf_examples(training_ids, \
-		'/pipeline/input/data/images/test', \
-		'/ua_vision_data-dataset1/data/database/training_examples.sqlite3')
+		settings['test_images'], \
+		settings['raw_data'] + '/data/database/training_examples.sqlite3'
 	for e in examples:
 		writer.write(e.SerializeToString())
 	writer.close()
@@ -151,8 +141,8 @@ def main(_):
 	# Generate TFRecord for evaluation examples
 	writer = tf.python_io.TFRecordWriter(FLAGS.evaluation_output)
 	examples = create_tf_examples(eval_ids, \
-		'/pipeline/input/data/images/eval', \
-		'/ua_vision_data-dataset1/data/database/training_examples.sqlite3')
+		settings['eval_images'], \
+		settings['raw_data'] + '/data/database/training_examples.sqlite3'
 	for e in examples:
 		writer.write(e.SerializeToString())
 	writer.close()
@@ -160,4 +150,3 @@ def main(_):
 
 if __name__ == '__main__':
 	tf.app.run()
-	print('Done')
