@@ -67,16 +67,16 @@ def download_dataset(settings):
 def run_training(settings):
     os.system('python ' + settings['paths']['train_script'] \
         + ' --logtostderr' \
-        + ' --train_dir=' + settings['dirs']['output'] + '/model.ckpt-' + settings['config']['train_config']['num_steps'] \
+        + ' --train_dir=' + settings['dirs']['output'] \
         + ' --pipeline_config_path=' + settings['paths']['updated_config']
     )
 
 
 def export(settings):
-    os.system('python ' + settings['export_script'] \
+    os.system('python ' + settings['paths']['export_script'] \
         + ' --input_type image_tensor' \
-        + ' --pipeline_config_path ' + settings['paths']['base_config'] \
-        + ' --trained_checkpoint_prefix ' + settings['dirs']['output'] + '/######' \
+        + ' --pipeline_config_path ' + settings['dirs']['output'] + '/pipeline.config' \
+        + ' --trained_checkpoint_prefix ' + settings['dirs']['output'] + '/model.ckpt-' + str(settings['config']['train_config']['num_steps']) \
         + ' --output_directory ' + settings['dirs']['tuned_models']
     )
 

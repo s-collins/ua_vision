@@ -12,13 +12,13 @@ dirs:
   base_model: base_model
   base_model_checkpoint: base_model/ssd_mobilenet_v1_coco_2018_01_28
   raw_data: dataset1
-  tuned_models: /tuned_models
+  tuned_models: tuned_models
 
 paths:
   base_config: base_model/pipeline.config
   updated_config: pipeline/pipeline.config
   train_script: /home/paperspace/training/tensorflow/models/research/object_detection/legacy/train.py
-  export_script: /home/paperspace/training/tensorflow/models/research/object_detection/export_interference_graph.py
+  export_script: /home/paperspace/training/tensorflow/models/research/object_detection/export_inference_graph.py
 
 training_ratio: 0.8
 
@@ -36,7 +36,7 @@ config:
 
   train_config:
     fine_tune_checkpoint: base_model/ssd_mobilenet_v1_coco_2018_01_28/model.ckpt
-    num_steps: 2000
+    num_steps: 20
 
   train_input_reader:
     tf_record_input_reader:
