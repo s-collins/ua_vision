@@ -1,0 +1,69 @@
+urls:
+
+  # URL to base model config file
+  base_config: https://github.com/tensorflow/models/blob/master/research/object_detection/samples/configs/ssd_mobilenet_v1_pets.config?raw=true
+
+  # URL to base model checkpoint
+  base_checkpoint: http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v1_coco_2018_01_28.tar.gz
+
+dirs:
+
+  pipeline: pipeline
+  base_model: base_model
+  base_model_checkpoint: base_model/checkpoint
+
+paths:
+
+  # base model configuration file
+  base_config: base_model/pipeline.config
+
+  # updated configuration file
+  updated_config: pipeline/pipeline.config
+
+#------------------------------------------------------------------------------
+# object_detection config file settings
+#------------------------------------------------------------------------------
+
+config:
+
+  model:
+
+    # Type of model (e.g., ssd, faster_cnn, etc.)
+    model_type: ssd
+
+    # Number of class labels
+    num_classes: 1
+
+  train_config:
+
+    # Path to the model checkpoint file
+    fine_tune_checkpoint: base_model/checkpoint/model.ckpt
+
+    # Number of iterations to run
+    num_steps: 100
+
+  train_input_reader:
+
+    tf_record_input_reader:
+
+      # Path to TFRecord file for training examples
+      input_path: ""
+
+    # Path to label map file
+    label_map_path: ""
+
+  eval_config:
+
+    # Number of evaluation examples
+    num_examples: 60
+
+  eval_input_reader:
+
+    tf_record_input_reader:
+
+      # Path to TFRecord file for evaluation examples
+      input_path: ""
+
+    # Path to label map file
+    label_map_path: ""
+
