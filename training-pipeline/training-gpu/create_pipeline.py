@@ -39,14 +39,22 @@ def populate_config(settings):
     #configs['eval_config']['num_examples'] = settings['config']['eval_config']['num_examples']
     #configs['eval_input_reader']['tf_record_input_reader']['input_path'] = settings['config']['eval_input_reader']['tf_record_input_reader']['input_path']
     #configs['eval_input_reader']['label_map_path'] = settings['config']['eval_input_reader']['label_map_path']
-    configs['model']['model_type'].CopyFrom(settings['config']['model']['model_type'])
-    configs['model']['num_classes'].CopyFrom(settings['config']['model']['num_classes'])
-    configs['train_config']['fine_tune_checkpoint'].CopyFrom(settings['config']['train_config']['fine_tune_checkpoint'])
-    configs['train_input_reader']['tf_record_input_reader']['input_path'].CopyFrom(settings['config']['train_input_reader']['tf_record_input_reader']['input_path'])
-    configs['train_input_reader']['label_map_path'].CopyFrom(settings['config']['train_input_reader']['label_map_path'])
-    configs['eval_config']['num_examples'].CopyFrom(settings['config']['eval_config']['num_examples'])
-    configs['eval_input_reader']['tf_record_input_reader']['input_path'].CopyFrom(settings['config']['eval_input_reader']['tf_record_input_reader']['input_path'])
-    configs['eval_input_reader']['label_map_path'].CopyFrom(settings['config']['eval_input_reader']['label_map_path'])
+
+    #configs['model']['model_type'].CopyFrom(settings['config']['model']['model_type'])
+    #configs['model']['num_classes'].CopyFrom(settings['config']['model']['num_classes'])
+    #configs['train_config']['fine_tune_checkpoint'].CopyFrom(settings['config']['train_config']['fine_tune_checkpoint'])
+    #configs['train_input_reader']['tf_record_input_reader']['input_path'].CopyFrom(settings['config']['train_input_reader']['tf_record_input_reader']['input_path'])
+    #configs['train_input_reader']['label_map_path'].CopyFrom(settings['config']['train_input_reader']['label_map_path'])
+    #configs['eval_config']['num_examples'].CopyFrom(settings['config']['eval_config']['num_examples'])
+    #configs['eval_input_reader']['tf_record_input_reader']['input_path'].CopyFrom(settings['config']['eval_input_reader']['tf_record_input_reader']['input_path'])
+    #configs['eval_input_reader']['label_map_path'].CopyFrom(settings['config']['eval_input_reader']['label_map_path'])
+
+    configs['model'].CopyFrom(settings['config']['model'])
+    configs['train_config'].CopyFrom(settings['config']['train_config'])
+    configs['train_input_config'].CopyFrom(settings['config']['train_input_reader'])
+    configs['eval_config'].CopyFrom(settings['config']['eval_config'])
+    configs['eval_input_configs'].CopyFrom(settings['config']['eval_input_reader'])
+
     print 'SUCCESS'
 
     print '...Writing new config file',
