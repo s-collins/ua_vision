@@ -31,30 +31,18 @@ def populate_config(settings):
     print 'SUCCESS'
 
     print '...Updating config settings',
-    #configs['model']['model_type'] = settings['config']['model']['model_type']
-    #configs['model']['num_classes'] = settings['config']['model']['num_classes']
-    #configs['train_config']['fine_tune_checkpoint'] = settings['config']['train_config']['fine_tune_checkpoint']
-    #configs['train_input_reader']['tf_record_input_reader']['input_path'] = settings['config']['train_input_reader']['tf_record_input_reader']['input_path']
-    #configs['train_input_reader']['label_map_path'] = settings['config']['train_input_reader']['label_map_path']
-    #configs['eval_config']['num_examples'] = settings['config']['eval_config']['num_examples']
-    #configs['eval_input_reader']['tf_record_input_reader']['input_path'] = settings['config']['eval_input_reader']['tf_record_input_reader']['input_path']
-    #configs['eval_input_reader']['label_map_path'] = settings['config']['eval_input_reader']['label_map_path']
-
-    #configs['model']['model_type'].CopyFrom(settings['config']['model']['model_type'])
-    #configs['model']['num_classes'].CopyFrom(settings['config']['model']['num_classes'])
-    #configs['train_config']['fine_tune_checkpoint'].CopyFrom(settings['config']['train_config']['fine_tune_checkpoint'])
-    #configs['train_input_reader']['tf_record_input_reader']['input_path'].CopyFrom(settings['config']['train_input_reader']['tf_record_input_reader']['input_path'])
-    #configs['train_input_reader']['label_map_path'].CopyFrom(settings['config']['train_input_reader']['label_map_path'])
-    #configs['eval_config']['num_examples'].CopyFrom(settings['config']['eval_config']['num_examples'])
-    #configs['eval_input_reader']['tf_record_input_reader']['input_path'].CopyFrom(settings['config']['eval_input_reader']['tf_record_input_reader']['input_path'])
-    #configs['eval_input_reader']['label_map_path'].CopyFrom(settings['config']['eval_input_reader']['label_map_path'])
-
-    configs['model'].CopyFrom(settings['config']['model'])
-    configs['train_config'].CopyFrom(settings['config']['train_config'])
-    configs['train_input_config'].CopyFrom(settings['config']['train_input_reader'])
-    configs['eval_config'].CopyFrom(settings['config']['eval_config'])
-    configs['eval_input_configs'].CopyFrom(settings['config']['eval_input_reader'])
-
+    hparams = {
+        'model:model_type': settings['config']['model']['model_type'],
+        'model:num_classes': settings['config']['model']['num_classes'],
+        'train_config:fine_tune_checkpoint': settings['config']['train_config']['fine_tune_checkpoint'],
+        'train_config:num_steps': settings['config']['train_config']['num_steps'],
+        'train_input_config:tf_record_input_reader:input_path': settings['config']['train_input_reader']['tf_record_input_reader']['input_path'],
+        'train_input_config:label_map_path': settings['config']['train_input_reader']['label_map_path'],
+        'eval_config:num_examples': settings['config']['eval_config']['num_examples'],
+        'eval_input_config:tf_record_input_reader:input_path': settings['config']['eval_input_reader']['tf_record_input_reader']['input_path'],
+        'eval_input_config:label_map_path': settings['config']['eval_input_reader']['label_map_path']
+    }
+    configs = config_util.merge_external_params_with_configs(configs, hparams)
     print 'SUCCESS'
 
     print '...Writing new config file',
