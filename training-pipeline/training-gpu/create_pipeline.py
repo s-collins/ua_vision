@@ -67,8 +67,17 @@ def download_dataset(settings):
 def run_training(settings):
     os.system('python ' + settings['paths']['train_script'] \
         + ' --logtostderr' \
-        + ' --train_dir=' + settings['dirs']['output'] \
+        + ' --train_dir=' + settings['dirs']['output'] + '/model.ckpt-' + settings['config']['train_config']['num_steps'] \
         + ' --pipeline_config_path=' + settings['paths']['updated_config']
+    )
+
+
+def export(settings):
+    os.system('python ' + settings['export_script'] \
+        + ' --input_type image_tensor' \
+        + ' --pipeline_config_path ' + settings['paths']['base_config'] \
+        + ' --trained_checkpoint_prefix ' + settings['dirs']['output'] + '/######' \
+        + ' --output_directory ' + settings['dirs']['tuned_models']
     )
 
 
@@ -98,6 +107,10 @@ if __name__ == '__main__':
     label_map.write('item {\n    name: "rock"\n    id: 1\n}')
     label_map.close()
 
-    selection = raw_input("Would you like to train now? (y/n):")
+    selection = raw_input("Would you like to train now? (y/n): ")
     if selection == 'y':
         run_training(settings)
+
+        selection = raw_input("Would you like to export the model? (y/n): ")
+        if selection == 'y':
+            export(settings)
