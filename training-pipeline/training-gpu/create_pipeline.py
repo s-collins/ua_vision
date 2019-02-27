@@ -1,4 +1,5 @@
 from object_detection.utils import config_util
+import tensorflow as tf
 import os
 import settings
 import tarfile
@@ -33,8 +34,12 @@ def populate_config(settings):
     print '...Updating config settings',
 
     # TODO: update the config settings
-    configs['model'].ssd.num_classes = settings['config']['model']['num_classes']
-
+    #configs['model'].ssd.num_classes = settings['config']['model']['num_classes']
+    hparams = tf.contrib.training.HParams(
+        **{
+            "model.ssd.num_classes": 1
+        })
+    configs = config_util.merge_external_params_with_configs(configs, hparams)
     print 'SUCCESS'
 
     print '...Writing new config file',
