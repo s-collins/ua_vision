@@ -13,17 +13,16 @@ def download_base_model(settings):
     print 'SUCCESS'
 
     print '...Downloading base model checkpoint',
-    wget.download(settings['urls']['base_checkpoint'], out=settings['dirs']['base_model']+'ckpt.tar.gz', bar=None)
+    wget.download(settings['urls']['base_checkpoint'], out=settings['dirs']['base_model'] + '/ckpt.tar.gz', bar=None)
     print 'SUCCESS'
 
     print '...Extracting base model checkpoint',
-    tar = tarfile.open(settings['dirs']['base_model'] + 'ckpt.tar.gz')
+    tar = tarfile.open(settings['dirs']['base_model'] + '/ckpt.tar.gz')
     tar.extractall(path=settings['dirs']['base_model_checkpoint'])
     tar.close()
     print 'SUCCESS'
 
     # TODO: Verify files downloaded and throw exception if not
-    raise BaseException('Not implemented')
 
 
 def populate_config(settings):
