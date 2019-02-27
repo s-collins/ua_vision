@@ -1,7 +1,7 @@
 import tensorflow as tf
 from object_detection.utils import dataset_util
 import random
-import settings
+from settings import load
 import shutil
 import sqlite3
 import os
@@ -107,10 +107,10 @@ def create_tf_examples(ids, images_dir, db_path):
 
 
 def main(_):
-	settings = settings.load('settings.yaml')
+	settings = load('settings.yaml')
 
 	# Detect number of training examples
-	images_path = settings['raw_data'] + '/images'
+	images_path = settings['dirs']['raw_data'] + '/data/images'
 	num_examples = len([name for name in os.listdir(images_path) if os.path.isfile(os.path.join(images_path,name))])
 
 	# Randomly subdivide examples into training and evaluation sets
@@ -122,18 +122,18 @@ def main(_):
 	# Put images into their directories
 	for id in training_ids:
 		src = images_path + '/' + str(id) + '.jpg'
-		dest = settings['test_images'] + '/' + str(id) + '.jpg'
+		dest = settings['dirs']['test_images'] + '/' + str(id) + '.jpg'
 		shutil.copyfile(src, dest)
 	for id in eval_ids:
 		src = images_path + '/' + str(id) + '.jpg'
-		dest = settings['eval_images'] + '/' + str(id) + '.jpg'
+		dest = settings['dirs']['eval_images'] + '/' + str(id) + '.jpg'
 		shutil.copyfile(src, dest)
 
 	# Generate TFRecord for training examples
 	writer = tf.python_io.TFRecordWriter(FLAGS.training_output)
 	examples = create_tf_examples(training_ids, \
-		settings['test_images'], \
-		settings['raw_data'] + '/data/database/training_examples.sqlite3'
+		settings['dirs']['test_images'], \
+		settings['dirs']['raw_data'] + '/data/database/training_examples.sqlite3')
 	for e in examples:
 		writer.write(e.SerializeToString())
 	writer.close()
@@ -141,8 +141,8 @@ def main(_):
 	# Generate TFRecord for evaluation examples
 	writer = tf.python_io.TFRecordWriter(FLAGS.evaluation_output)
 	examples = create_tf_examples(eval_ids, \
-		settings['eval_images'], \
-		settings['raw_data'] + '/data/database/training_examples.sqlite3'
+		settings['dirs']['eval_images'], \
+		settings['dirs']['raw_data'] + '/data/database/training_examples.sqlite3')
 	for e in examples:
 		writer.write(e.SerializeToString())
 	writer.close()

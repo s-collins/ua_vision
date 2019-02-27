@@ -37,11 +37,11 @@ config:
 
   train_input_reader:
     tf_record_input_reader:
-      input_path: TEST_PATH
+      input_path: pipeline/input/test.tfrecords
 
   eval_config:
     num_examples: 60
 
   eval_input_reader:
     tf_record_input_reader:
-      input_path: TEST_PATH
+      input_path: pipeline/input/eval.tfrecords
