@@ -56,7 +56,8 @@ if __name__ == '__main__':
     # Create directories
     print '[[ Creating directories ]]'
     for key, directory in settings['dirs'].iteritems():
-        os.makedirs(directory)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
     # Download the base model
     print '[[ Downloading the base model ]]'
