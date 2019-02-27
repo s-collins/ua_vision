@@ -64,6 +64,14 @@ def download_dataset(settings):
     tar.close()
 
 
+def run_training(settings):
+    os.system('python ' + settings['paths']['train_script'] \
+        + ' --logtostderr' \
+        + ' --train_dir=' + settings['dirs']['output'] \
+        + ' --pipeline_config_path=' + settings['path']['updated_config']
+    )
+
+
 if __name__ == '__main__':
     print 'Loading settings'
     settings = settings.load('settings.yaml')
@@ -92,4 +100,4 @@ if __name__ == '__main__':
 
     selection = raw_input("Would you like to train now? (y/n):")
     if selection == 'y':
-        pass
+        run_training(settings)
