@@ -57,13 +57,11 @@ def download_dataset(settings):
 
     print '...Downloading the dataset',
     wget.download(settings['urls']['dataset'], out=tmp_file, bar=None)
-    print 'SUCCESS'
 
     print '...Extracting the dataset',
     tar = tarfile.open(tmp_file)
     tar.extractall(members=tar.getmembers())
     tar.close()
-    print 'SUCCESS'
 
 
 if __name__ == '__main__':
@@ -87,5 +85,11 @@ if __name__ == '__main__':
     evaluation_output = settings['config']['eval_input_reader']['tf_record_input_reader']['input_path']
     os.system('python make_tfrecords.py --training_output=' + training_output + ' --evaluation_output=' + evaluation_output)
 
-    # TODO: Generate the label map
+    print 'Writing the label map'
+    label_map = open(settings['config']['label_map_path'], 'w')
+    label_map.write('item {\n    name: "rock"\n    id: 1\n}')
+    label_map.close()
 
+    selection = input("Would you like to train now? (y/n):")
+    if selection == 'y':
+        pass

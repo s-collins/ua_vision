@@ -19,13 +19,16 @@ paths:
 
 training_ratio: 0.8
 
+labels:
+  - 
+
 #------------------------------------------------------------------------------
 # object_detection config file settings
 #------------------------------------------------------------------------------
 
 config:
 
-  label_map_path: TEST_PATH
+  label_map_path: pipeline/input/label_map.pbtxt
 
   model:
     model_type: ssd
