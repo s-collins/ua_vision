@@ -1,23 +1,17 @@
 urls:
-
-  # URL to base model config file
   base_config: https://github.com/tensorflow/models/blob/master/research/object_detection/samples/configs/ssd_mobilenet_v1_pets.config?raw=true
-
-  # URL to base model checkpoint
   base_checkpoint: http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v1_coco_2018_01_28.tar.gz
+  dataset: "https://github.com/s-collins/ua_vision_data/archive/dataset1.tar.gz"
 
 dirs:
 
   pipeline: pipeline
   base_model: base_model
   base_model_checkpoint: base_model/checkpoint
+  raw_data: raw_data
 
 paths:
-
-  # base model configuration file
   base_config: base_model/pipeline.config
-
-  # updated configuration file
   updated_config: pipeline/pipeline.config
 
 #------------------------------------------------------------------------------

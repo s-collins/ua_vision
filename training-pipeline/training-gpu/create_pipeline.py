@@ -23,10 +23,10 @@ def download_base_model(settings):
     tar.close()
     print 'SUCCESS'
 
-    # TODO: Verify files downloaded and throw exception if not
-
 
 def populate_config(settings):
+    """Fill the base config file with settings and save new version."""
+
     print '...Reading base config file',
     configs = config_util.get_configs_from_pipeline_file(settings['paths']['base_config'])
     print 'SUCCESS'
@@ -51,22 +51,46 @@ def populate_config(settings):
     print 'SUCCESS'
 
 
-if __name__ == '__main__':
-    # Read settings file
-    print 'Loading settings'
-    settings = settings.load('settings.yaml')
-
-    # Create directories
-    print 'Creating directories'
+def create_dirs(settings):
     for key, directory in settings['dirs'].iteritems():
         if not os.path.exists(directory):
             os.makedirs(directory)
 
-    # Download the base model
+
+def download_dataset(settings);
+    tmp_file = settings['dirs']['raw_data'] + '/dataset.tar.gz'
+
+    print '...Downloading the dataset'
+    wget.download(settings['url']['dataset'], out=tmp_file, bar=None)
+    print 'SUCCESS'
+
+    print '...Extracting the dataset'
+    tar = tarfile.open(tmp_file)
+    tar.extractall(path=settings['dirs']['raw_data'], members=tar.getmembers())
+    tar.close()
+    print 'SUCCESS'
+
+
+if __name__ == '__main__':
+    print '-'*60 + "\nSETUP\n" + '-'*60
+
+    print 'Loading settings'
+    settings = settings.load('settings.yaml')
+
+    print 'Creating directories'
+    create_dirs(settings)
+
     print 'Downloading the base model'
     download_base_model(settings)
 
-    # Populate the pipeline.config file
     print 'Generating "pipeline.config"'
     populate_config(settings)
+
+    # TODO: Download the dataset
+    print 'Download the dataset'
+    download_dataset(settings)
+
+    # TODO: Generate the TFRecords
+
+    # TODO: Generate the label map
 
