@@ -58,7 +58,7 @@ def create_dirs(settings):
 
 
 def download_dataset(settings):
-    tmp_file = settings['dirs']['raw_data'] + '/dataset.tar.gz'
+    tmp_file = 'dataset.tar.gz'
 
     print '...Downloading the dataset',
     wget.download(settings['urls']['dataset'], out=tmp_file, bar=None)
@@ -66,7 +66,7 @@ def download_dataset(settings):
 
     print '...Extracting the dataset',
     tar = tarfile.open(tmp_file)
-    tar.extractall(path=settings['dirs']['raw_data'], members=tar.getmembers())
+    tar.extractall(members=tar.getmembers())
     tar.close()
     print 'SUCCESS'
 
