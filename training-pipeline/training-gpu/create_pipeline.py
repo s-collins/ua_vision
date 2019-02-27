@@ -57,7 +57,7 @@ def create_dirs(settings):
             os.makedirs(directory)
 
 
-def download_dataset(settings);
+def download_dataset(settings):
     tmp_file = settings['dirs']['raw_data'] + '/dataset.tar.gz'
 
     print '...Downloading the dataset'
