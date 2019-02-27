@@ -18,7 +18,7 @@ def download_base_model(settings):
 
     print '...Extracting base model checkpoint',
     tar = tarfile.open(settings['dirs']['base_model'] + '/ckpt.tar.gz')
-    tar.extractall(path=settings['dirs']['base_model_checkpoint'])
+    tar.extractall(path=settings['dirs']['base_model_checkpoint'], members=tar.getmembers())
     tar.close()
     print 'SUCCESS'
 
@@ -27,7 +27,7 @@ def download_base_model(settings):
 
 def populate_config(settings):
     print '...Reading base config file',
-    configs = config_util.get_configs_from_pipeline(settings['paths']['base_config'])
+    configs = config_util.get_configs_from_pipeline_file(settings['paths']['base_config'])
     print 'SUCCESS'
 
     print '...Updating config settings',
