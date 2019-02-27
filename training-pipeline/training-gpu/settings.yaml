@@ -26,44 +26,24 @@ paths:
 
 config:
 
+  label_map_path: TEST_PATH
+
   model:
-
-    # Type of model (e.g., ssd, faster_cnn, etc.)
     model_type: ssd
-
-    # Number of class labels
     num_classes: 1
 
   train_config:
-
-    # Path to the model checkpoint file
     fine_tune_checkpoint: base_model/checkpoint/model.ckpt
-
-    # Number of iterations to run
     num_steps: 100
 
   train_input_reader:
-
     tf_record_input_reader:
-
-      # Path to TFRecord file for training examples
-      input_path: ""
-
-    # Path to label map file
-    label_map_path: ""
+      input_path: TEST_PATH
 
   eval_config:
-
-    # Number of evaluation examples
     num_examples: 60
 
   eval_input_reader:
-
     tf_record_input_reader:
-
-      # Path to TFRecord file for evaluation examples
-      input_path: ""
-
-    # Path to label map file
-    label_map_path: ""
+      input_path: TEST_PATH
 
