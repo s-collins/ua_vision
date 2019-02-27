@@ -33,7 +33,8 @@ def populate_config(settings):
     print '...Updating config settings',
 
     # TODO: update the config settings
-    
+    configs['model'].ssd.num_classes = settings['config']['model']['num_classes']
+
     print 'SUCCESS'
 
     print '...Writing new config file',
