@@ -31,23 +31,14 @@ def populate_config(settings):
     print 'SUCCESS'
 
     print '...Updating config settings',
-    hparams = {
-        'model:model_type': settings['config']['model']['model_type'],
-        'model:num_classes': settings['config']['model']['num_classes'],
-        'train_config:fine_tune_checkpoint': settings['config']['train_config']['fine_tune_checkpoint'],
-        'train_config:num_steps': settings['config']['train_config']['num_steps'],
-        'train_input_config:tf_record_input_reader:input_path': settings['config']['train_input_reader']['tf_record_input_reader']['input_path'],
-        'train_input_config:label_map_path': settings['config']['train_input_reader']['label_map_path'],
-        'eval_config:num_examples': settings['config']['eval_config']['num_examples'],
-        'eval_input_config:tf_record_input_reader:input_path': settings['config']['eval_input_reader']['tf_record_input_reader']['input_path'],
-        'eval_input_config:label_map_path': settings['config']['eval_input_reader']['label_map_path']
-    }
-    configs = config_util.merge_external_params_with_configs(configs, hparams)
+
+    # TODO: update the config settings
+    
     print 'SUCCESS'
 
     print '...Writing new config file',
     pipeline_config = config_util.create_pipeline_proto_from_configs(configs)
-    config_util.save_pipeline_config(pipeline_config, settings['paths']['pipeline'])   
+    config_util.save_pipeline_config(pipeline_config, settings['dirs']['pipeline'])   
     print 'SUCCESS'
 
 
