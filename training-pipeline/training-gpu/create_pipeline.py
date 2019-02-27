@@ -18,7 +18,7 @@ def download_base_model(settings):
 
     print '...Extracting base model checkpoint'
     tar = tarfile.open(settings['dirs']['base_model'] + '/ckpt.tar.gz')
-    tar.extractall(path=settings['dirs']['base_model_checkpoint'], members=tar.getmembers())
+    tar.extractall(path=settings['dirs']['base_model'], members=tar.getmembers())
     tar.close()
 
 
@@ -68,7 +68,7 @@ def run_training(settings):
     os.system('python ' + settings['paths']['train_script'] \
         + ' --logtostderr' \
         + ' --train_dir=' + settings['dirs']['output'] \
-        + ' --pipeline_config_path=' + settings['path']['updated_config']
+        + ' --pipeline_config_path=' + settings['paths']['updated_config']
     )
 
 
