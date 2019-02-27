@@ -90,6 +90,6 @@ if __name__ == '__main__':
     label_map.write('item {\n    name: "rock"\n    id: 1\n}')
     label_map.close()
 
-    selection = input("Would you like to train now? (y/n):")
+    selection = raw_input("Would you like to train now? (y/n):")
     if selection == 'y':
         pass
