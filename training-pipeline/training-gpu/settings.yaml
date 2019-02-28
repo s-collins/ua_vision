@@ -4,7 +4,6 @@ urls:
   dataset: https://github.com/s-collins/ua_vision_data/releases/download/dataset1/dataset1.tar.gz
 
 dirs:
-
   pipeline: pipeline
   test_images: pipeline/input/test_images
   eval_images: pipeline/input/eval_images
