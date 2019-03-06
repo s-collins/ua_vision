@@ -15,8 +15,9 @@ from object_detection.utils import label_map_util
 flags = tf.app.flags
 flags.DEFINE_string('annotations_dir', 'annotations', 'Root directory to PASCAL annotations.')
 flags.DEFINE_string('image_dir', 'images', 'Root directory to raw images.')
-flags.DEFINE_string('label_map_path', 'label_map.pbtxt')
+flags.DEFINE_string('label_map_path', 'label_map.pbtxt', 'Path to label map file')
 flags.DEFINE_string('output_path', 'examples.tfrecord', 'Path to output TFRecord.')
+FLAGS = flags.FLAGS
 
 
 #TODO: Add "dict_to_tf_example"
@@ -89,7 +90,7 @@ def main(_):
 	for i in range(1, num_examples + 1):
 		# Load the XML file for training example
 		path = os.path.join(annotations_dir, str(i) + '.xml')
-		with tf.gfileGFile(path, 'r') as fid:
+		with tf.gfile.GFile(path, 'r') as fid:
 			xml_str = fid.read()
 		xml = etree.fromstring(xml_str)
 		data = dataset_util.recursive_parse_xml_to_dict(xml)['annotation']
