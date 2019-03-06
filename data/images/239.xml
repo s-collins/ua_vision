@@ -1,0 +1,26 @@
+<annotation>
+	<folder>images</folder>
+	<filename>239.jpg</filename>
+	<path>/home/sean/Documents/projects/ua_vision_data/data/images/239.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>640</width>
+		<height>480</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>rock</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>38</xmin>
+			<ymin>1</ymin>
+			<xmax>173</xmax>
+			<ymax>70</ymax>
+		</bndbox>
+	</object>
+</annotation>
