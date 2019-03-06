@@ -25,7 +25,7 @@ PATH_TO_LABELS = 'label_map.pbtxt'
 
 # Path to directory containing images
 PATH_TO_TEST_IMAGES_DIR = '/home/sean/Documents/projects/ua_vision_data/data/images'
-TEST_IMAGE_PATHS = [ os.path.join(PATH_TO_TEST_IMAGES_DIR, '{}.jpg'.format(i)) for i in range(1, 5) ]
+TEST_IMAGE_PATHS = [ os.path.join(PATH_TO_TEST_IMAGES_DIR, '{}.jpg'.format(i)) for i in range(1, 100) ]
 
 # Size of output images
 IMAGE_SIZE = (12, 8)
@@ -109,7 +109,6 @@ for image_path in TEST_IMAGE_PATHS:
   output_dict = run_inference_for_single_image(image_np, detection_graph)
 
   # Visualization of the results of a detection.
-  plt.figure(figsize=IMAGE_SIZE)
   vis_util.visualize_boxes_and_labels_on_image_array(
       image_np,
       output_dict['detection_boxes'],
@@ -119,7 +118,8 @@ for image_path in TEST_IMAGE_PATHS:
       instance_masks=output_dict.get('detection_masks'),
       use_normalized_coordinates=True,
       line_thickness=8,
-      min_score_thresh=0.01
+      min_score_thresh=0
       )
+  plt.figure(figsize=IMAGE_SIZE)
   plt.imshow(image_np)
-  plt.pause(10)
+  plt.pause(1)
