@@ -95,7 +95,7 @@ def main(_):
 		data = dataset_util.recursive_parse_xml_to_dict(xml)['annotation']
 
 		# Convert dictionary to TFRecord object
-		tf_example = dict_to_tf_example(data, label_map_dict):
+		tf_example = dict_to_tf_example(data, label_map_dict)
 
 		# Save the record
 		writer.write(tf_example.SerializeToString())
